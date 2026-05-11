@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2025-11-08 07:34:16 by Eclipse SUMO duarouter Version 1.24.0
+<duarouterConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/duarouterConfiguration.xsd">
+
+    <input>
+        <net-file value="/Users/aaryankhanna/Sumo/2025-11-08-07-34-01/osm.net.xml.gz"/>
+        <route-files value="/Users/aaryankhanna/Sumo/2025-11-08-07-34-01/osm.pedestrian.trips.xml"/>
+    </input>
+
+    <output>
+        <output-file value="/Users/aaryankhanna/Sumo/2025-11-08-07-34-01/osm.pedestrian.trips.xml.tmp"/>
+        <alternatives-output value="NUL"/>
+        <write-trips value="true"/>
+    </output>
+
+    <time>
+        <begin value="0.0"/>
+        <end value="3600.0"/>
+    </time>
+
+    <report>
+        <no-warnings value="true"/>
+        <ignore-errors value="true"/>
+        <no-step-log value="true"/>
+    </report>
+
+</duarouterConfiguration>
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <vType id="ped_pedestrian" vClass="pedestrian"/>
+    <person id="ped100" type="ped_pedestrian" depart="572.93">
+        <personTrip from="-697913240" to="-377007997" walkFactor="0.75"/>
+    </person>
+    <person id="ped107" type="ped_pedestrian" depart="613.04">
+        <personTrip from="-169204559#3" to="-1190294604" walkFactor="0.75"/>
+    </person>
+    <person id="ped111" type="ped_pedestrian" depart="635.96">
+        <personTrip from="788344764#1" to="1119761807#0" walkFactor="0.75"/>
+    </person>
+    <person id="ped148" type="ped_pedestrian" depart="847.94">
+        <personTrip from="183252908#0" to="1175874709" walkFactor="0.75"/>
+    </person>
+    <person id="ped157" type="ped_pedestrian" depart="899.51">
+        <personTrip from="-169204559#4" to="169204559#4" walkFactor="0.75"/>
+    </person>
+    <person id="ped192" type="ped_pedestrian" depart="1100.03">
+        <personTrip from="169204559#7" to="377007953#3" walkFactor="0.75"/>
+    </person>
+    <person id="ped197" type="ped_pedestrian" depart="1128.68">
+        <personTrip from="-169204559#5" to="-169205034#2" walkFactor="0.75"/>
+    </person>
+    <person id="ped257" type="ped_pedestrian" depart="1472.44">
+        <personTrip from="-377007965" to="-22857631" walkFactor="0.75"/>
+    </person>
+    <person id="ped336" type="ped_pedestrian" depart="1925.06">
+        <personTrip from="1187255279#0" to="-1187255279#0" walkFactor="0.75"/>
+    </person>
+    <person id="ped575" type="ped_pedestrian" depart="3294.38">
+        <personTrip from="279559438#0" to="73052809#1" walkFactor="0.75"/>
+    </person>
+    <person id="ped619" type="ped_pedestrian" depart="3546.47">
+        <personTrip from="-1187255281" to="1187255279#0" walkFactor="0.75"/>
+    </person>
+    <person id="ped622" type="ped_pedestrian" depart="3563.65">
+        <personTrip from="169204559#4" to="377007953#6" walkFactor="0.75"/>
+    </person>
+</routes>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Map | CyberVANET</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #05050a; color: #fff; font-family: 'Outfit', sans-serif; margin: 0; }
+        .map-header { padding: 2rem 3rem; background: rgba(10,10,15,0.9); border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .map-container { padding: 3rem; }
+        .map-placeholder { width: 100%; height: 600px; background: rgba(255,255,255,0.03); border: 1px dashed rgba(0,242,255,0.3); border-radius: 24px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .map-placeholder i { font-size: 4rem; color: #00f2ff; margin-bottom: 1.5rem; }
+        .map-placeholder h2 { font-size: 2rem; margin-bottom: 1rem; }
+        .map-placeholder p { color: #888; max-width: 500px; }
+    </style>
+</head>
+<body>
+    <div class="map-header">
+        <h1>GEOSPATIAL NETWORK MAP</h1>
+        <button onclick="location.href='/'" class="btn-secondary">Back to Dashboard</button>
+    </div>
+    <div class="map-container">
+        <div class="map-placeholder">
+            <i class="fas fa-map-marked-alt"></i>
+            <h2>Vile Parle Grid Active</h2>
+            <p>The high-fidelity network map is currently rendering on the simulation engine window. This web-view will soon support real-time node tracking and heatmaps.</p>
+        </div>
+    </div>
+</body>
+</html>

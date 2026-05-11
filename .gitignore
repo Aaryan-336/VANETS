@@ -1,0 +1,36 @@
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Environments
+venv/
+.venv/
+env/
+.env/
+.env.*
+
+# Jupyter / IPython
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+
+# Local results/artifacts (keep tracked if you want; remove if needed)
+# results/
+# reports/

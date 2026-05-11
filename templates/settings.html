@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Settings | CyberVANET</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #05050a; color: #fff; font-family: 'Outfit', sans-serif; margin: 0; }
+        .settings-header { padding: 2rem 3rem; background: rgba(10,10,15,0.9); border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .settings-container { padding: 3rem; max-width: 800px; margin: 0 auto; }
+        .settings-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 2.5rem; margin-bottom: 2rem; }
+        .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .setting-info h3 { margin: 0; font-size: 1.2rem; }
+        .setting-info p { color: #888; font-size: 0.9rem; margin-top: 5px; }
+        .setting-control select, .setting-control input { background: #111; border: 1px solid #333; color: #fff; padding: 8px 15px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="settings-header">
+        <h1>SYSTEM CONFIGURATION</h1>
+        <button onclick="location.href='/'" class="btn-secondary">Back to Dashboard</button>
+    </div>
+    <div class="settings-container">
+        <div class="settings-card">
+            <div class="setting-row">
+                <div class="setting-info">
+                    <h3>Traffic Density</h3>
+                    <p>Adjust the number of autonomous vehicles spawned per step.</p>
+                </div>
+                <div class="setting-control">
+                    <select disabled>
+                        <option>Medium (10-15)</option>
+                        <option>High (20+)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="setting-row">
+                <div class="setting-info">
+                    <h3>Simulation GUI</h3>
+                    <p>Launch the visual SUMO interface during engine initialization.</p>
+                </div>
+                <div class="setting-control">
+                    <input type="checkbox" checked disabled>
+                </div>
+            </div>
+            <div class="setting-row">
+                <div class="setting-info">
+                    <h3>Data Persistence</h3>
+                    <p>Save communication logs to local CSV/JSON files.</p>
+                </div>
+                <div class="setting-control">
+                    <input type="checkbox" checked disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    
+    <!-- Vehicle Types -->
+    <vType id="car" accel="2.6" decel="4.5" sigma="0.5" length="5" minGap="2.5" maxSpeed="50" guiShape="passenger"/>
+    <vType id="bus" accel="1.2" decel="3.5" sigma="0.3" length="12" minGap="3" maxSpeed="40" guiShape="bus"/>
+    <vType id="truck" accel="1.0" decel="3.0" sigma="0.3" length="8" minGap="3" maxSpeed="35" guiShape="truck"/>
+    
+    <!-- Routes -->
+    <route id="route0" edges="h0_0 h0_1 h0_2 h0_3"/>
+    <route id="route1" edges="h1_0 h1_1 h1_2 h1_3"/>
+    <route id="route2" edges="h2_0 h2_1 h2_2 h2_3"/>
+    <route id="route3" edges="h3_0 h3_1 h3_2 h3_3"/>
+    <route id="route4" edges="v0_0 v0_1 v0_2 v0_3"/>
+    <route id="route5" edges="v1_0 v1_1 v1_2 v1_3"/>
+    <route id="route6" edges="v2_0 v2_1 v2_2 v2_3"/>
+    <route id="route7" edges="v3_0 v3_1 v3_2 v3_3"/>
+    
+    <route id="route8" edges="h0_0 v1_0 v1_1 h2_1 h2_2"/>
+    <route id="route9" edges="v0_0 h1_0 h1_1 v2_1 v2_2"/>
+    <route id="route10" edges="h1_0 v1_0 h2_1 v2_1 h3_1"/>
+    <route id="route11" edges="v1_0 h2_1 v2_1 h3_1 v3_1"/>
+    
+    <!-- Vehicle Flows for Urban Traffic -->
+    <flow id="flow0" type="car" route="route0" begin="0" end="300" period="3" departLane="best" departSpeed="max"/>
+    <flow id="flow1" type="car" route="route1" begin="0" end="300" period="3.5" departLane="best" departSpeed="max"/>
+    <flow id="flow2" type="car" route="route2" begin="0" end="300" period="3" departLane="best" departSpeed="max"/>
+    <flow id="flow3" type="car" route="route3" begin="0" end="300" period="3.5" departLane="best" departSpeed="max"/>
+    
+    <flow id="flow4" type="car" route="route4" begin="0" end="300" period="4" departLane="best" departSpeed="max"/>
+    <flow id="flow5" type="car" route="route5" begin="0" end="300" period="3.5" departLane="best" departSpeed="max"/>
+    <flow id="flow6" type="car" route="route6" begin="0" end="300" period="4" departLane="best" departSpeed="max"/>
+    <flow id="flow7" type="car" route="route7" begin="0" end="300" period="3.5" departLane="best" departSpeed="max"/>
+    
+    <flow id="flow8" type="car" route="route8" begin="0" end="300" period="5" departLane="best" departSpeed="max"/>
+    <flow id="flow9" type="car" route="route9" begin="0" end="300" period="5" departLane="best" departSpeed="max"/>
+    <flow id="flow10" type="car" route="route10" begin="0" end="300" period="6" departLane="best" departSpeed="max"/>
+    <flow id="flow11" type="car" route="route11" begin="0" end="300" period="6" departLane="best" departSpeed="max"/>
+    
+    <!-- Add some buses and trucks -->
+    <flow id="bus_flow1" type="bus" route="route1" begin="10" end="300" period="20" departLane="best" departSpeed="max"/>
+    <flow id="bus_flow2" type="bus" route="route5" begin="15" end="300" period="25" departLane="best" departSpeed="max"/>
+    
+    <flow id="truck_flow1" type="truck" route="route0" begin="5" end="300" period="15" departLane="best" departSpeed="max"/>
+    <flow id="truck_flow2" type="truck" route="route6" begin="8" end="300" period="18" departLane="best" departSpeed="max"/>
+    
+</routes>

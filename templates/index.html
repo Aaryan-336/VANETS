@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberVANET | Research Command</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --bg: #05050a;
+        }
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        .main-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 260px;
+            background: rgba(10, 10, 15, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--primary);
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #888;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        .nav-item:hover, .nav-item.active {
+            color: var(--primary);
+        }
+        .content {
+            flex: 1;
+            padding: 3rem;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+        .btn-launch {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0, 242, 255, 0.2);
+            transition: 0.3s;
+        }
+        .btn-launch:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 242, 255, 0.4);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .stat-card label {
+            display: block;
+            color: #888;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+        .stat-card .value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .stat-card .active-tag {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+        .btn-view {
+            width: 100%;
+            margin-top: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .btn-view:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="logo">VANETSim</div>
+            <nav style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <a href="/" class="nav-item active"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="/dashboard" target="_blank" class="nav-item"><i class="fas fa-chart-line"></i> Analytics</a>
+                <a href="/map" class="nav-item"><i class="fas fa-map"></i> Network Map</a>
+                <a href="/settings" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+        </aside>
+        
+        <main class="content">
+            <div class="header">
+                <div>
+                    <h1 style="margin:0; font-size: 2.5rem;">Network Intelligence</h1>
+                    <p style="color: #666; margin-top: 5px;">Real-time V2X communication analysis in Vile Parle</p>
+                </div>
+                <button id="launchBtn" onclick="startSimulation()" class="btn-launch">
+                    <i class="fas fa-play"></i> INITIALIZE ENGINE
+                </button>
+            </div>
+
+            <div class="grid">
+                <div class="stat-card">
+                    <label><i class="fas fa-signal"></i> Network PDR</label>
+                    <div class="value" id="pdr-val">0.0%</div>
+                    <div class="active-tag"><i class="fas fa-satellite"></i> <span id="proto-val">DSRC</span> Active</div>
+                </div>
+                
+                <div class="stat-card">
+                    <label><i class="fas fa-microchip"></i> Avg. Latency</label>
+                    <div class="value" id="latency-val">20ms</div>
+                </div>
+                
+                <div class="stat-card">
+                    <label><i class="fas fa-shield-alt"></i> Stability Score</label>
+                    <div class="value" id="stability-val">0.0</div>
+                </div>
+
+                <div class="stat-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                    <label>Comparison</label>
+                    <button onclick="window.open('/dashboard')" class="btn-view">
+                        OPEN ANALYTICS
+                    </button>
+                </div>
+            </div>
+
+            <!-- Protocol Legend -->
+            <div class="stat-card" style="margin-top: 2rem; border-color: rgba(0, 242, 255, 0.2); background: rgba(0, 242, 255, 0.02);">
+                <label>Protocol Reference Legend</label>
+                <div style="display: flex; gap: 3rem; margin-top: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #00f2ff; box-shadow: 0 0 10px #00f2ff;"></div>
+                        <span style="font-weight: 600; color: #00f2ff;">DSRC</span>
+                        <span style="color: #666; font-size: 0.8rem;">(Short Range)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #39ff14; box-shadow: 0 0 10px #39ff14;"></div>
+                        <span style="font-weight: 600; color: #39ff14;">C-V2X</span>
+                        <span style="color: #666; font-size: 0.8rem;">(Cellular)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #bc13fe; box-shadow: 0 0 10px #bc13fe;"></div>
+                        <span style="font-weight: 600; color: #bc13fe;">5G-V2X</span>
+                        <span style="color: #666; font-size: 0.8rem;">(5G Network)</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function startSimulation() {
+            const btn = document.getElementById('launchBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> INITIALIZING...';
+            
+            fetch('/start_simulation', { method: 'POST' })
+                .then(res => res.json())
+                .then(data => {
+                    btn.innerHTML = '<i class="fas fa-check"></i> ENGINE ONLINE';
+                    btn.style.background = 'linear-gradient(45deg, #00ff88, #00f2ff)';
+                });
+        }
+
+        function updateStats() {
+            fetch('/get_stats')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('pdr-val').innerText = data.pdr.toFixed(1) + '%';
+                    document.getElementById('latency-val').innerText = data.latency.toFixed(2) + 'ms';
+                    document.getElementById('stability-val').innerText = data.stability.toFixed(1);
+                    document.getElementById('proto-val').innerText = data.active_protocol || 'DSRC';
+                });
+        }
+        setInterval(updateStats, 1000);
+    </script>
+</body>
+</html>

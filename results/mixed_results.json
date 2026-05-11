@@ -1,0 +1,75 @@
+{
+  "timestamp": "2025-11-07T22:06:03.124813",
+  "time_series": {
+    "DSRC": {
+      "time": [],
+      "pdr": [],
+      "latency": [],
+      "throughput": []
+    },
+    "C-V2X": {
+      "time": [],
+      "pdr": [],
+      "latency": [],
+      "throughput": []
+    },
+    "5G-V2X": {
+      "time": [],
+      "pdr": [],
+      "latency": [],
+      "throughput": []
+    }
+  },
+  "distance_based": {
+    "DSRC": {
+      "distances": [],
+      "pdr": [],
+      "latency": []
+    },
+    "C-V2X": {
+      "distances": [],
+      "pdr": [],
+      "latency": []
+    },
+    "5G-V2X": {
+      "distances": [],
+      "pdr": [],
+      "latency": []
+    }
+  },
+  "density_based": {
+    "DSRC": {
+      "density": [],
+      "pdr": [],
+      "latency": []
+    },
+    "C-V2X": {
+      "density": [],
+      "pdr": [],
+      "latency": []
+    },
+    "5G-V2X": {
+      "density": [],
+      "pdr": [],
+      "latency": []
+    }
+  },
+  "speed_based": {
+    "DSRC": {
+      "speed": [],
+      "pdr": [],
+      "latency": []
+    },
+    "C-V2X": {
+      "speed": [],
+      "pdr": [],
+      "latency": []
+    },
+    "5G-V2X": {
+      "speed": [],
+      "pdr": [],
+      "latency": []
+    }
+  },
+  "summary": {}
+}

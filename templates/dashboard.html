@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VANET Analytics | Research Command</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
+    <style>
+        :root {
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --bg-dark: #05050a;
+            --card-glass: rgba(255, 255, 255, 0.03);
+            --border-glass: rgba(255, 255, 255, 0.1);
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        .header-bar {
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-glass);
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .header-bar h1 {
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            margin: 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .comparison-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 30px;
+        }
+        .protocol-column {
+            background: var(--card-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+        .protocol-column:hover {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .protocol-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 25px;
+            letter-spacing: 3px;
+        }
+        .title-5G { color: var(--secondary); text-shadow: 0 0 15px rgba(112, 0, 255, 0.3); }
+        .title-CV2X { color: #39ff14; text-shadow: 0 0 15px rgba(57, 255, 20, 0.3); }
+        .title-DSRC { color: var(--primary); text-shadow: 0 0 15px rgba(0, 242, 255, 0.3); }
+
+        .graph-area {
+            width: 100%;
+            height: 160px;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 10px;
+        }
+        .metrics-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #aaa;
+            line-height: 1.8;
+        }
+        .metrics-box strong {
+            color: #fff;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 5px 0;
+        }
+        .metric-row span { color: #fff; font-weight: 600; }
+        
+        .weather-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 30px;
+            border-radius: 50px;
+            background: rgba(255, 100, 0, 0.2);
+            border: 1px solid #ff6400;
+            color: #ff6400;
+            font-weight: 700;
+            display: none;
+            z-index: 2000;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <div id="weather-banner" class="weather-banner">⚠️ WEATHER EVENT: RAIN ACTIVE</div>
+
+    <div class="header-bar">
+        <h1>RESEARCH COMMAND: PROTOCOL COMPARISON</h1>
+        <button onclick="location.href='/'" class="btn-secondary">Exit Console</button>
+    </div>
+
+    <div class="comparison-container">
+        {% for p in ['5G', 'CV2X', 'DSRC'] %}
+        <div class="protocol-column">
+            <div class="protocol-title title-{{ p }}">{{ p }}</div>
+            
+            <div class="graph-area"><canvas id="pdr-{{ p }}"></canvas></div>
+            <div class="graph-area"><canvas id="latency-{{ p }}"></canvas></div>
+            <div class="graph-area"><canvas id="stability-{{ p }}"></canvas></div>
+            
+            <div class="metrics-box" id="metrics-{{ p }}">
+                <strong>Live Telemetry</strong>
+                <div class="metric-row">PDR <span id="pdr-val-{{ p }}">0.0%</span></div>
+                <div class="metric-row">Latency <span id="latency-val-{{ p }}">0ms</span></div>
+                <div class="metric-row">Stability <span id="stability-val-{{ p }}">0.0</span></div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        const charts = {};
+        const protocols = ['5G', 'CV2X', 'DSRC'];
+        const metrics = ['pdr', 'latency', 'stability'];
+        let lastWeather = 'clear';
+        
+        function initCharts() {
+            protocols.forEach(p => {
+                const color = p === '5G' ? '#bc13fe' : (p === 'CV2X' ? '#39ff14' : '#00f2ff');
+                metrics.forEach(m => {
+                    const ctx = document.getElementById(`${m}-${p}`).getContext('2d');
+                    charts[`${m}-${p}`] = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: [],
+                            datasets: [{
+                                label: m.toUpperCase(),
+                                data: [],
+                                borderColor: color,
+                                backgroundColor: color + '11',
+                                borderWidth: 2,
+                                pointRadius: 0,
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { 
+                                legend: { display: false },
+                                annotation: {
+                                    annotations: {}
+                                }
+                            },
+                            scales: { 
+                                x: { display: false },
+                                y: { 
+                                    beginAtZero: true, 
+                                    grid: { color: 'rgba(255,255,255,0.05)' },
+                                    ticks: { color: '#666', font: { size: 10 } }
+                                } 
+                            }
+                        }
+                    });
+                });
+            });
+        }
+
+        function updateData() {
+            fetch('/get_all_stats')
+                .then(res => res.json())
+                .then(data => {
+                    const currentWeather = data.weather || 'clear';
+                    const banner = document.getElementById('weather-banner');
+                    
+                    if (currentWeather !== 'clear') {
+                        banner.style.display = 'block';
+                        banner.innerText = `⚠️ WEATHER EVENT: ${currentWeather.toUpperCase()} ACTIVE`;
+                    } else {
+                        banner.style.display = 'none';
+                    }
+
+                    protocols.forEach(p => {
+                        const stats = data[p];
+                        if (!stats) return;
+
+                        document.getElementById(`pdr-val-${p}`).innerText = stats.pdr.toFixed(1) + '%';
+                        document.getElementById(`latency-val-${p}`).innerText = stats.latency.toFixed(2) + 'ms';
+                        document.getElementById(`stability-val-${p}`).innerText = stats.stability.toFixed(1);
+                        
+                        const time = new Date().toLocaleTimeString();
+                        metrics.forEach(m => {
+                            const chart = charts[`${m}-${p}`];
+                            chart.data.labels.push(time);
+                            chart.data.datasets[0].data.push(stats[m]);
+                            
+                            // Weather Annotation
+                            if (currentWeather !== lastWeather) {
+                                const annotationId = `weather-${Date.now()}`;
+                                const label = currentWeather === 'clear' ? `${lastWeather.toUpperCase()} ENDED` : `${currentWeather.toUpperCase()} STARTED`;
+                                const color = currentWeather === 'clear' ? '#00ff00' : '#ff6400';
+
+                                Object.values(charts).forEach(c => {
+                                    c.options.plugins.annotation.annotations[annotationId] = {
+                                        type: 'line',
+                                        xMin: time,
+                                        xMax: time,
+                                        borderColor: color,
+                                        borderWidth: 2,
+                                        label: {
+                                            display: true,
+                                            content: label,
+                                            backgroundColor: color,
+                                            color: '#fff',
+                                            font: { size: 10 }
+                                        }
+                                    };
+                                });
+                            }
+
+                            if (chart.data.labels.length > 30) {
+                                chart.data.labels.shift();
+                                chart.data.datasets[0].data.shift();
+                            }
+                            chart.update('none');
+                        });
+                    });
+                    lastWeather = currentWeather;
+                });
+        }
+
+        initCharts();
+        setInterval(updateData, 1000);
+    </script>
+</body>
+</html>

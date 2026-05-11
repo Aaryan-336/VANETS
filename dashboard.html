@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VANET Protocol Comparison Dashboard - Test Mode</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+        
+        .mode-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        
+        .controls {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(72, 187, 120, 0.4);
+        }
+        
+        .status {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status.info {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            color: #0369a1;
+        }
+        
+        .status.success {
+            background: linear-gradient(135deg, #d4edda 0%, #a8e6b8 100%);
+            color: #155724;
+        }
+        
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 1.8em;
+            font-weight: 800;
+        }
+        
+        .card.dsrc h3 { color: #3498db; }
+        .card.cv2x h3 { color: #e74c3c; }
+        .card.fiveg h3 { color: #2ecc71; }
+        
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .metric:last-child {
+            border-bottom: none;
+        }
+        
+        .metric-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .metric-value {
+            font-weight: 800;
+            color: #667eea;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .chart-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .insights {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-top: 30px;
+        }
+        
+        .insights h2 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            font-size: 2em;
+            font-weight: 800;
+        }
+        
+        .insight-item {
+            padding: 20px;
+            margin: 15px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 5px solid #2ecc71;
+            border-radius: 10px;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .legend-color {
+            width: 25px;
+            height: 25px;
+            border-radius: 6px;
+        }
+        
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚗 VANET Protocol Comparison Dashboard</h1>
+            <p class="subtitle">Advanced Analytics for DSRC, C-V2X, and 5G-V2X Performance</p>
+        </header>
+        
+        <div class="controls">
+            <button class="btn btn-primary" onclick="loadScenario('urban')">📊 Load Urban</button>
+            <button class="btn btn-primary" onclick="loadScenario('mixed')">📊 Load Mixed</button>
+            <button class="btn btn-primary" onclick="loadScenario('vile_parle')">📊 Load Vile Parle</button>
+            
+            <span id="status" class="status info">Click any button to load data</span>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #3498db;"></div>
+                <span><strong>DSRC</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #e74c3c;"></div>
+                <span><strong>C-V2X</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #2ecc71;"></div>
+                <span><strong>5G-V2X</strong></span>
+            </div>
+        </div>
+        
+        <div id="summaryCards" class="summary-cards"></div>
+        <div class="charts-grid" id="chartsGrid"></div>
+        
+        <div class="insights" id="insightsSection" style="display: none;">
+            <h2>📊 Key Insights: Why 5G-V2X Outperforms</h2>
+            <div class="insight-item">
+                <strong>⚡ Ultra-Low Latency:</strong> 5G-V2X achieves ~1ms latency compared to DSRC's 4ms and C-V2X's 20ms, critical for safety applications like collision avoidance.
+            </div>
+            <div class="insight-item">
+                <strong>📡 Extended Range:</strong> With 1000m range, 5G-V2X covers 3x more distance than DSRC (300m) and 2x more than C-V2X (500m).
+            </div>
+            <div class="insight-item">
+                <strong>🚀 Higher Bandwidth:</strong> 1000 Mbps bandwidth enables rich data exchange including HD maps, sensor fusion, and real-time video streaming.
+            </div>
+            <div class="insight-item">
+                <strong>✅ Superior Reliability:</strong> 99% reliability ensures critical safety messages are delivered even in challenging conditions.
+            </div>
+            <div class="insight-item">
+                <strong>🏙️ Density Performance:</strong> Advanced beamforming and interference management allow 5G-V2X to maintain performance in high-density urban scenarios.
+            </div>
+            <div class="insight-item">
+                <strong>🏎️ High-Speed Mobility:</strong> Better Doppler effect compensation enables reliable communication at highway speeds (120+ km/h).
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let charts = {};
+        const colors = {
+            'DSRC': '#3498db',
+            'C-V2X': '#e74c3c',
+            '5G-V2X': '#2ecc71'
+        };
+        
+        const API_BASE_URL = 'http://localhost:5000';
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.className = `status ${type}`;
+            status.textContent = message;
+        }
+        
+        // Generate mock data for testing
+        function generateMockData(scenario) {
+            const timePoints = 30;
+            const time = Array.from({length: timePoints}, (_, i) => i * 10);
+            
+            return {
+                summary: {
+                    'DSRC': {
+                        pdr: 85.5,
+                        average_latency: 4.2,
+                        max_range: 300,
+                        bandwidth: 27,
+                        total_transmitted: 15420,
+                        total_received: 13184
+                    },
+                    'C-V2X': {
+                        pdr: 92.3,
+                        average_latency: 20.5,
+                        max_range: 500,
+                        bandwidth: 100,
+                        total_transmitted: 15420,
+                        total_received: 14233
+                    },
+                    '5G-V2X': {
+                        pdr: 98.7,
+                        average_latency: 1.2,
+                        max_range: 1000,
+                        bandwidth: 1000,
+                        total_transmitted: 15420,
+                        total_received: 15219
+                    }
+                },
+                timeSeries: {
+                    'DSRC': {
+                        time: time,
+                        pdr: time.map(t => 85 + Math.random() * 10 - 5),
+                        latency: time.map(t => 4 + Math.random() * 2),
+                        throughput: time.map(t => 20 + Math.random() * 7)
+                    },
+                    'C-V2X': {
+                        time: time,
+                        pdr: time.map(t => 92 + Math.random() * 8 - 4),
+                        latency: time.map(t => 20 + Math.random() * 5),
+                        throughput: time.map(t => 85 + Math.random() * 15)
+                    },
+                    '5G-V2X': {
+                        time: time,
+                        pdr: time.map(t => 98 + Math.random() * 2 - 1),
+                        latency: time.map(t => 1 + Math.random() * 0.5),
+                        throughput: time.map(t => 900 + Math.random() * 100)
+                    }
+                },
+                distanceBased: {
+                    'DSRC': {
+                        distances: [50, 100, 150, 200, 250, 300],
+                        pdr: [95, 90, 85, 75, 60, 40]
+                    },
+                    'C-V2X': {
+                        distances: [100, 200, 300, 400, 500],
+                        pdr: [98, 95, 92, 85, 75]
+                    },
+                    '5G-V2X': {
+                        distances: [200, 400, 600, 800, 1000],
+                        pdr: [99, 98, 97, 96, 94]
+                    }
+                },
+                densityBased: {
+                    'DSRC': {
+                        density: [10, 20, 30, 40, 50],
+                        pdr: [90, 88, 85, 80, 75]
+                    },
+                    'C-V2X': {
+                        density: [10, 20, 30, 40, 50],
+                        pdr: [95, 93, 92, 90, 87]
+                    },
+                    '5G-V2X': {
+                        density: [10, 20, 30, 40, 50],
+                        pdr: [99, 98, 98, 97, 96]
+                    }
+                },
+                speedBased: {
+                    'DSRC': {
+                        speed: [30, 60, 90, 120],
+                        pdr: [90, 87, 82, 75]
+                    },
+                    'C-V2X': {
+                        speed: [30, 60, 90, 120],
+                        pdr: [95, 93, 90, 86]
+                    },
+                    '5G-V2X': {
+                        speed: [30, 60, 90, 120],
+                        pdr: [99, 98, 97, 96]
+                    }
+                }
+            };
+        }
+        
+        async function testBackend() {
+            showStatus('🔍 Testing backend connection...', 'info');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/health`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    showStatus('✅ Backend connected! Status: ' + data.status, 'success');
+                    console.log('Backend response:', data);
+                } else {
+                    throw new Error(`Server responded with status: ${response.status}`);
+                }
+            } catch (error) {
+                showStatus('❌ Backend not reachable: ' + error.message, 'info');
+                console.error('Connection error:', error);
+                alert('Backend Connection Failed!\n\n' +
+                      'Error: ' + error.message + '\n\n' +
+                      'Make sure Flask server is running:\n' +
+                      '  python main.py dashboard\n\n' +
+                      'This demo will work with sample data anyway.');
+            }
+        }
+        
+        function loadScenario(scenario) {
+            showStatus(`Loading ${scenario} data...`, 'info');
+            
+            // Use mock data for demo
+            const data = generateMockData(scenario);
+            renderDashboard(data);
+            showStatus(`✅ ${scenario.toUpperCase()} loaded successfully!`, 'success');
+        }
+        
+        function renderDashboard(data) {
+            renderSummaryCards(data.summary);
+            renderCharts(data);
+            document.getElementById('insightsSection').style.display = 'block';
+        }
+        
+        function renderSummaryCards(summary) {
+            const container = document.getElementById('summaryCards');
+            container.innerHTML = '';
+            
+            const protocols = ['DSRC', 'C-V2X', '5G-V2X'];
+            const classes = ['dsrc', 'cv2x', 'fiveg'];
+            
+            protocols.forEach((protocol, idx) => {
+                const stats = summary[protocol];
+                if (!stats) return;
+                
+                const card = document.createElement('div');
+                card.className = `card ${classes[idx]}`;
+                card.innerHTML = `
+                    <h3>${protocol}</h3>
+                    <div class="metric">
+                        <span class="metric-label">PDR:</span>
+                        <span class="metric-value">${stats.pdr.toFixed(1)}%</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Avg Latency:</span>
+                        <span class="metric-value">${stats.average_latency.toFixed(1)} ms</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Max Range:</span>
+                        <span class="metric-value">${stats.max_range} m</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Bandwidth:</span>
+                        <span class="metric-value">${stats.bandwidth} Mbps</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Packets Sent:</span>
+                        <span class="metric-value">${stats.total_transmitted}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Packets Received:</span>
+                        <span class="metric-value">${stats.total_received}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        function renderCharts(data) {
+            const chartsGrid = document.getElementById('chartsGrid');
+            chartsGrid.innerHTML = '';
+            
+            const chartConfigs = [
+                { id: 'pdrChart', title: 'Packet Delivery Ratio Over Time', renderFunc: () => renderPDRChart(data.timeSeries) },
+                { id: 'latencyChart', title: 'Latency Comparison Over Time', renderFunc: () => renderLatencyChart(data.timeSeries) },
+                { id: 'distanceChart', title: 'Distance vs PDR', renderFunc: () => renderDistanceChart(data.distanceBased) },
+                { id: 'densityChart', title: 'Vehicle Density Impact', renderFunc: () => renderDensityChart(data.densityBased) },
+                { id: 'speedChart', title: 'Speed Impact on Performance', renderFunc: () => renderSpeedChart(data.speedBased) },
+                { id: 'throughputChart', title: 'Throughput Comparison', renderFunc: () => renderThroughputChart(data.timeSeries) }
+            ];
+            
+            chartConfigs.forEach(config => {
+                const container = document.createElement('div');
+                container.className = 'chart-container';
+                container.innerHTML = `
+                    <div class="chart-title">${config.title}</div>
+                    <canvas id="${config.id}"></canvas>
+                `;
+                chartsGrid.appendChild(container);
+            });
+            
+            chartConfigs.forEach(config => config.renderFunc());
+        }
+        
+        function destroyChart(chartId) {
+            if (charts[chartId]) {
+                charts[chartId].destroy();
+            }
+        }
+        
+        function renderPDRChart(timeSeries) {
+            destroyChart('pdrChart');
+            const ctx = document.getElementById('pdrChart').getContext('2d');
+            
+            const datasets = Object.keys(timeSeries).map(protocol => ({
+                label: protocol,
+                data: timeSeries[protocol].pdr,
+                borderColor: colors[protocol],
+                backgroundColor: colors[protocol] + '20',
+                tension: 0.4,
+                fill: true
+            }));
+            
+            charts['pdrChart'] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: timeSeries['DSRC'].time,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true, position: 'top' }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            max: 100,
+                            title: { display: true, text: 'PDR (%)' }
+                        },
+                        x: {
+                            title: { display: true, text: 'Time (s)' }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderLatencyChart(timeSeries) {
+            destroyChart('latencyChart');
+            const ctx = document.getElementById('latencyChart').getContext('2d');
+            
+            const datasets = Object.keys(timeSeries).map(protocol => ({
+                label: protocol,
+                data: timeSeries[protocol].latency,
+                borderColor: colors[protocol],
+                backgroundColor: colors[protocol] + '20',
+                tension: 0.4,
+                fill: true
+            }));
+            
+            charts['latencyChart'] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: timeSeries['DSRC'].time,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true, position: 'top' }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            title: { display: true, text: 'Latency (ms)' }
+                        },
+                        x: {
+                            title: { display: true, text: 'Time (s)' }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderDistanceChart(distanceBased) {
+            destroyChart('distanceChart');
+            const ctx = document.getElementById('distanceChart').getContext('2d');
+            
+            const datasets = Object.keys(distanceBased).map(protocol => ({
+                label: protocol,
+                data: distanceBased[protocol].distances.map((d, i) => ({
+                    x: d,
+                    y: distanceBased[protocol].pdr[i]
+                })),
+                borderColor: colors[protocol],
+                backgroundColor: colors[protocol],
+                pointRadius: 4
+            }));
+            
+            charts['distanceChart'] = new Chart(ctx, {
+                type: 'scatter',
+                data: { datasets: datasets },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true, position: 'top' }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            max: 100,
+                            title: { display: true, text: 'PDR (%)' }
+                        },
+                        x: {
+                            title: { display: true, text: 'Distance (m)' }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderDensityChart(densityBased) {
+            destroyChart('densityChart');
+            const ctx = document.getElementById('densityChart').getContext('2d');
+            
+            const datasets = Object.keys(densityBased).map(protocol => ({
+                label: protocol,
+                data: densityBased[protocol].pdr,
+                borderColor: colors[protocol],
+                backgroundColor: colors[protocol] + '40',
+                tension: 0.4
+            }));
+            
+            charts['densityChart'] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: densityBased['DSRC'].density,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true, position: 'top' }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            max: 100,
+                            title: { display: true, text: 'PDR (%)' }
+                        },
+                        x: {
+                            title: { display: true, text: 'Vehicle Density' }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderSpeedChart(speedBased) {
+            destroyChart('speedChart');
+            const ctx = document.getElementById('speedChart').getContext('2d');
+            
+            const datasets = Object.keys(speedBased).map(protocol => ({
+                label: protocol,
+                data: speedBased[protocol].pdr,
+                borderColor: colors[protocol],
+                backgroundColor: colors[protocol] + '40',
+                tension: 0.4
+            }));
+            
+            charts['speedChart'] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: speedBased['DSRC'].speed,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true, position: 'top' }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            max: 100,
+                            title: { display: true, text: 'PDR (%)' }
+                        },
+                        x: {
+                            title: { display: true, text: 'Speed (km/h)' }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderThroughputChart(timeSeries) {
+            destroyChart('throughputChart');
+            const ctx = document.getElementById('throughputChart').getContext('2d');
+            
+            const datasets = Object.keys(timeSeries).map(protocol => ({
+                label: protocol,
+                data: timeSeries[protocol].throughput,
+                borderColor: colors[protocol],
+                backgroundColor: colors[protocol] + '20',
+                tension: 0.4,
+                fill: true
+            }));
+            
+            charts['throughputChart'] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: timeSeries['DSRC'].time,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true, position: 'top' }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            title: { display: true, text: 'Throughput (Mbps)' }
+                        },
+                        x: {
+                            title: { display: true, text: 'Time (s)' }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

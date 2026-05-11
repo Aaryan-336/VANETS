@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edges xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/edges_file.xsd">
+
+    <!-- Urban Horizontal Roads -->
+    <edge id="ue0" from="u0" to="u1" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="ue1" from="u1" to="u2" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="ue2" from="u2" to="u3" priority="2" numLanes="2" speed="13.89"/>
+
+    <edge id="ue3" from="u4" to="u5" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="ue4" from="u5" to="u6" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="ue5" from="u6" to="u7" priority="2" numLanes="2" speed="13.89"/>
+
+    <edge id="ue6" from="u8" to="u9" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="ue7" from="u9" to="u10" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="ue8" from="u10" to="u11" priority="2" numLanes="2" speed="13.89"/>
+
+    <!-- Urban Vertical Roads -->
+    <edge id="uv0" from="u0" to="u4" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="uv1" from="u4" to="u8" priority="2" numLanes="2" speed="13.89"/>
+
+    <edge id="uv2" from="u1" to="u5" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="uv3" from="u5" to="u9" priority="2" numLanes="2" speed="13.89"/>
+
+    <edge id="uv4" from="u2" to="u6" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="uv5" from="u6" to="u10" priority="2" numLanes="2" speed="13.89"/>
+
+    <edge id="uv6" from="u3" to="u7" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="uv7" from="u7" to="u11" priority="2" numLanes="2" speed="13.89"/>
+
+    <!-- Transition -->
+    <edge id="te0" from="u7" to="t0" priority="3" numLanes="2" speed="22.22"/>
+    <edge id="te1" from="t0" to="h0" priority="3" numLanes="3" speed="27.78"/>
+
+    <!-- Highway -->
+    <edge id="he0" from="h0" to="h1" priority="4" numLanes="3" speed="33.33"/>
+    <edge id="he1" from="h1" to="h2" priority="4" numLanes="3" speed="33.33"/>
+    <edge id="he2" from="h2" to="h3" priority="4" numLanes="3" speed="33.33"/>
+
+</edges>

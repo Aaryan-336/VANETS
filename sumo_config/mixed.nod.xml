@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/nodes_file.xsd">
+
+    <!-- Urban Area Nodes -->
+    <node id="u0" x="0.00" y="500.00" type="priority"/>
+    <node id="u1" x="300.00" y="500.00" type="traffic_light"/>
+    <node id="u2" x="600.00" y="500.00" type="traffic_light"/>
+    <node id="u3" x="900.00" y="500.00" type="priority"/>
+
+    <node id="u4" x="0.00" y="1000.00" type="priority"/>
+    <node id="u5" x="300.00" y="1000.00" type="traffic_light"/>
+    <node id="u6" x="600.00" y="1000.00" type="traffic_light"/>
+    <node id="u7" x="900.00" y="1000.00" type="priority"/>
+
+    <node id="u8" x="0.00" y="1500.00" type="priority"/>
+    <node id="u9" x="300.00" y="1500.00" type="traffic_light"/>
+    <node id="u10" x="600.00" y="1500.00" type="traffic_light"/>
+    <node id="u11" x="900.00" y="1500.00" type="priority"/>
+
+    <!-- Transition Node -->
+    <node id="t0" x="1050.00" y="1000.00" type="priority"/>
+
+    <!-- Highway Nodes -->
+    <node id="h0" x="1200.00" y="1000.00" type="priority"/>
+    <node id="h1" x="1800.00" y="1000.00" type="priority"/>
+    <node id="h2" x="2400.00" y="1000.00" type="priority"/>
+    <node id="h3" x="3000.00" y="1000.00" type="priority"/>
+
+</nodes>

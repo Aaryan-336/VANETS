@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<net version="1.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="0.00,0.00" convBoundary="0.00,0.00,2000.00,2000.00" origBoundary="0.00,0.00,2000.00,2000.00" projParameter="!"/>
+
+    <!-- Urban Grid Network: 4x4 grid with intersections -->
+    
+    <!-- Nodes (Intersections) -->
+    <node id="n0" x="0.00" y="0.00" type="priority"/>
+    <node id="n1" x="500.00" y="0.00" type="priority"/>
+    <node id="n2" x="1000.00" y="0.00" type="priority"/>
+    <node id="n3" x="1500.00" y="0.00" type="priority"/>
+    <node id="n4" x="2000.00" y="0.00" type="priority"/>
+    
+    <node id="n5" x="0.00" y="500.00" type="priority"/>
+    <node id="n6" x="500.00" y="500.00" type="traffic_light"/>
+    <node id="n7" x="1000.00" y="500.00" type="traffic_light"/>
+    <node id="n8" x="1500.00" y="500.00" type="traffic_light"/>
+    <node id="n9" x="2000.00" y="500.00" type="priority"/>
+    
+    <node id="n10" x="0.00" y="1000.00" type="priority"/>
+    <node id="n11" x="500.00" y="1000.00" type="traffic_light"/>
+    <node id="n12" x="1000.00" y="1000.00" type="traffic_light"/>
+    <node id="n13" x="1500.00" y="1000.00" type="traffic_light"/>
+    <node id="n14" x="2000.00" y="1000.00" type="priority"/>
+    
+    <node id="n15" x="0.00" y="1500.00" type="priority"/>
+    <node id="n16" x="500.00" y="1500.00" type="traffic_light"/>
+    <node id="n17" x="1000.00" y="1500.00" type="traffic_light"/>
+    <node id="n18" x="1500.00" y="1500.00" type="traffic_light"/>
+    <node id="n19" x="2000.00" y="1500.00" type="priority"/>
+    
+    <node id="n20" x="0.00" y="2000.00" type="priority"/>
+    <node id="n21" x="500.00" y="2000.00" type="priority"/>
+    <node id="n22" x="1000.00" y="2000.00" type="priority"/>
+    <node id="n23" x="1500.00" y="2000.00" type="priority"/>
+    <node id="n24" x="2000.00" y="2000.00" type="priority"/>
+
+    <!-- Edges (Roads) -->
+    <!-- Horizontal roads -->
+    <edge id="h0_0" from="n0" to="n1" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="h0_1" from="n1" to="n2" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="h0_2" from="n2" to="n3" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="h0_3" from="n3" to="n4" priority="2" numLanes="2" speed="13.89"/>
+    
+    <edge id="h1_0" from="n5" to="n6" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="h1_1" from="n6" to="n7" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="h1_2" from="n7" to="n8" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="h1_3" from="n8" to="n9" priority="2" numLanes="2" speed="13.89"/>
+    
+    <edge id="h2_0" from="n10" to="n11" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="h2_1" from="n11" to="n12" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="h2_2" from="n12" to="n13" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="h2_3" from="n13" to="n14" priority="2" numLanes="2" speed="13.89"/>
+    
+    <edge id="h3_0" from="n15" to="n16" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="h3_1" from="n16" to="n17" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="h3_2" from="n17" to="n18" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="h3_3" from="n18" to="n19" priority="2" numLanes="2" speed="13.89"/>
+    
+    <edge id="h4_0" from="n20" to="n21" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="h4_1" from="n21" to="n22" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="h4_2" from="n22" to="n23" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="h4_3" from="n23" to="n24" priority="2" numLanes="2" speed="13.89"/>
+
+    <!-- Vertical roads -->
+    <edge id="v0_0" from="n0" to="n5" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="v0_1" from="n5" to="n10" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="v0_2" from="n10" to="n15" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="v0_3" from="n15" to="n20" priority="2" numLanes="2" speed="13.89"/>
+    
+    <edge id="v1_0" from="n1" to="n6" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="v1_1" from="n6" to="n11" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="v1_2" from="n11" to="n16" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="v1_3" from="n16" to="n21" priority="2" numLanes="2" speed="13.89"/>
+    
+    <edge id="v2_0" from="n2" to="n7" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="v2_1" from="n7" to="n12" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="v2_2" from="n12" to="n17" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="v2_3" from="n17" to="n22" priority="2" numLanes="2" speed="13.89"/>
+    
+    <edge id="v3_0" from="n3" to="n8" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="v3_1" from="n8" to="n13" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="v3_2" from="n13" to="n18" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="v3_3" from="n18" to="n23" priority="2" numLanes="2" speed="13.89"/>
+    
+    <edge id="v4_0" from="n4" to="n9" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="v4_1" from="n9" to="n14" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="v4_2" from="n14" to="n19" priority="2" numLanes="2" speed="13.89"/>
+    <edge id="v4_3" from="n19" to="n24" priority="2" numLanes="2" speed="13.89"/>
+
+</net>
